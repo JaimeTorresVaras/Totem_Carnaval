@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tótem Bsale</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: url("./precios-fondo2.png") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.5); /* oscurece un poco la foto */
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .name {
+      font-size: 2.5em;
+      font-weight: bold;
+    }
+
+    .sku, .price {
+      font-size: 1.5em;
+      margin-top: 10px;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 1em;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>Tótem Bsale</h1>
+    <div class="result">
+      <div class="name">Nombre del producto</div>
+      <div class="sku">SKU: ---</div>
+      <div class="price">Precio: ---</div>
+    </div>
+    <div id="status">Esperando escaneo...</div>
+  </div>
+
+  <script>
+    // Este script conecta al backend
+    async function fetchProduct(code) {
+      try {
+        const res = await fetch(`http://localhost:3000/product/${code}`);
+        const data = await res.json();
+        document.querySelector(".name").textContent = data.name || "Sin nombre";
+        document.querySelector(".sku").textContent = "SKU: " + (data.sku || "---");
+        document.querySelector(".price").textContent = "Precio: " + (data.price || "---");
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").textContent = "Error al obtener producto";
+      }
+    }
+
+    // Simulación: auto-consulta con un código fijo
+    setTimeout(() => {
+      fetchProduct("123456"); // reemplázalo con tu código de prueba
+    }, 2000);
+  </script>
+</body>
+</html>
